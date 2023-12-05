@@ -23,15 +23,25 @@ class BaseModel():
             self.updated_at = datetime.now()
 
     def __str__(self):
-
-
+        """String representation of an object"""
+        class_name = self.__class__.__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
 
     def save(self):
-        """Updates the updated_at attribute
-        with the current datetime"""
+        """Update updated_at with current date time"""
+        self.updated_at = datetime.now()
+        sotrage.save()
+        # Assuming storage is an instance of your storage mechanism
 
-        self.update_at = datetime.now()
-        storage.save()
+    def to_dict_(self):
+        """Returns a dictionary representation of the object"""
+        obj_dict = self.__dict__.copy()
+        obj_dict['__class__'] = self.__class__.__name__
 
+        if 'created_at' in obj_dict:
+            obj_dict['created_at'] = obj_dict['created_at'].isoformat()
 
-    def to_dic(self):
+        if 'updated_at' in obj_dict:
+            obj_dict['updated_at'] = obj_dict['updated_at'].isoformat()
+
+        return obj_dict
