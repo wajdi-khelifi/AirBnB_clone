@@ -72,6 +72,6 @@ Read or watch:
 - A documentation is not a simple word, it’s a real sentence explaining what’s the purpose of the module, class or method (the length of it will be verified)
 
 ## Authors
-- Authors: Wajdi khelifi & Iheb chaoued
+- Authors: Wajdi Khelifi & Iheb Chaoued
 - Email: khelifi.wajdi@hotmail.com & ihebchaoued@gmail.com
 - Github: [wajdi khelifi](https://github.com/wajdi-khelifi) & [iheb chaoued](https://github.com/IhebChaoued)
