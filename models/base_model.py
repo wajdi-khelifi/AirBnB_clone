@@ -30,10 +30,10 @@ class BaseModel():
     def save(self):
         """Update updated_at with current date time"""
         self.updated_at = datetime.now()
-        sotrage.save()
+        storage.save()
         # Assuming storage is an instance of your storage mechanism
 
-    def to_dict_(self):
+    def to_dict(self):
         """Returns a dictionary representation of the object"""
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
