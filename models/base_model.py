@@ -7,6 +7,7 @@ class BaseModel():
     """All Classes for BaseModel"""
 
     def __init__(self, *args, **kwargs):
+        """Starts a new Model"""
         if kwargs:
             for key, value in kwargs.items()
             if key == 'created_at' or key == 'updated_at':
