@@ -2,6 +2,7 @@
 """Base class for all Models"""
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel():
@@ -30,8 +31,7 @@ class BaseModel():
     def save(self):
         """Update updated_at with current date time"""
         self.updated_at = datetime.now()
-        storage.save()
-        # Assuming storage is an instance of your storage mechanism
+        storage.save(self)
 
     def to_dict(self):
         """Returns a dictionary representation of the object"""
