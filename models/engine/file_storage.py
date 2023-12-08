@@ -1,40 +1,40 @@
-#!/usr/bin/python3
-"""FileStorage module - Manage storage"""
+# models/engine/file_storage.py
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
     """Manage storage"""
-
-    def __init__(self):
-        self.__file_path = "file.json"
-        self.__objects = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects"""
-        return self.__objects
+        """Returns the dictionqry __objects"""
+        return FileStorage.__objects
 
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file"""
-        serialized_objects = {}
-        for key, obj in self.__objects.items():
-            serialized_objects[key] = obj.to_dict()
-        with open(self.__file_path, 'w') as file:
-            json.dump(serialized_objects, file)
+        """Serializes __objects to the Json file"""
+        obj_dic = {}
+        for key in self.__objects.keys():
+            obj = self.__objects[key]
+            obj_dic[key] = obj.to_dict()
+
+        with open(self.__file_path, "w") as f:
+            json.dump(obj_dic, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects"""
+        """Deserializes the Json file to __objects"""
         try:
-            with open(self.__file_path, 'r') as file:
+            with open(FileStorage.__file_path, 'r') as file:
                 loaded_objects = json.load(file)
             for key, value in loaded_objects.items():
                 class_name, obj_id = key.split('.')
-                obj_instance = models[class_name](**value)
-                self.__objects[key] = obj_instance
+                obj_instance = BaseModel(**value)
+                FileStorage.__objects[key] = obj_instance
         except FileNotFoundError:
             pass

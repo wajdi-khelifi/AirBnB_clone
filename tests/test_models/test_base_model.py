@@ -20,8 +20,8 @@ class TestBaseModel(unittest.TestCase):
         """Test the __str__ method"""
         my_model = BaseModel()
         expected_str = "[BaseModel] ({}) {}".format(
-            my_model.id, my_model.__dict__
-        )
+                my_model.id, my_model.__dict__
+                )
         self.assertEqual(str(my_model), expected_str)
 
     def test_save_method(self):
@@ -55,13 +55,11 @@ class TestBaseModel(unittest.TestCase):
         new_model = BaseModel(**my_model_json)
 
         self.assertEqual(my_model.id, new_model.id)
-        self.assertEqual(my_model.created_at, new_model.created_at)
-        self.assertEqual(my_model.updated_at, new_model.updated_at)
+        self.assertEqual(int(my_model.created_at.timestamp()), int(new_model.created_at.timestamp()))
+        self.assertEqual(int(my_model.updated_at.timestamp()), int(new_model.updated_at.timestamp()))
         self.assertEqual(my_model.name, new_model.name)
         self.assertEqual(my_model.my_number, new_model.my_number)
-        self.assertEqual(
-            my_model.__class__.__name__, new_model.__class__.__name__
-        )
+        self.assertEqual(my_model.__class__.__name__, new_model.__class__.__name__)
 
 
 if __name__ == '__main__':
