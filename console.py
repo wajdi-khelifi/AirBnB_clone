@@ -4,23 +4,24 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
+    """Cmd"""
     prompt = '(hbnb) '
 
     def do_quit(self, arg):
-        """"""
+        """quit"""
         return True
 
-    def do_help(self, arg):
-        """"""
-        cmd.Cmd.do_help(self, arg)
+    do_quit = do_EOF
 
-    def do_create(self, arg):
-        """"""
+
+    def do_help(self, arg):
+        """Ask for help"""
+        cmd.Cmd.do_help(self, arg)
 
     def emptyline(self):
         """Just empty"""
         pass
 
-    def do_show(self, arg):
-        """"""
-        pass
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
