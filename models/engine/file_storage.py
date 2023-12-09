@@ -1,4 +1,5 @@
-# models/engine/file_storage.py
+#!/usr/bin/python3
+"""File Storage"""
 import json
 from models.base_model import BaseModel
 
