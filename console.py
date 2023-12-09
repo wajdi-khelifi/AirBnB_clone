@@ -13,7 +13,6 @@ class HBNBCommand(cmd.Cmd):
 
     do_EOF = do_quit
 
-
     def do_help(self, arg):
         """Ask for help"""
         cmd.Cmd.do_help(self, arg)
