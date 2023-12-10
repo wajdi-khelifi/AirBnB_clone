@@ -121,14 +121,6 @@ class HBNBCommand(cmd.Cmd):
             setattr(instance, attr_name, attr_value)
             instance.save()
 
-    def default(self, arg):
-        """Custom method for handling <class name>.all()"""
-        parts = arg.split(".")
-        if len(parts) == 2 and parts[1] == "all":
-            self.do_all(parts[0])
-        else:
-            super().default(arg)
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
