@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         command_parts = arguments[1].split("(")
         issued_command = command_parts[0]
         command_actions = {
-                'all': self.perform_all_action
+                'all': self.do_all
                 }
         if issued_command not in command_actions.keys():
             if not target_class:
