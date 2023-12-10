@@ -15,7 +15,7 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """Cmd"""
     prompt = '(hbnb) '
-    class_name = ["BaseModel"]
+    class_name = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arguments[0] not in self.class_name:
             print("** class doesn't exist **")
-        elif not arguments[1]:
+        elif len(arguments) < 2:
             print("** instance id missing **")
         else:
             instance_key = f"{arguments[0]}.{arguments[1]}"
@@ -66,7 +66,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arguments[0] not in self.class_name:
             print("** class doesn't exist **")
-        elif not arguments[1]:
+        elif len(arguments) < 2:
             print("** instance id missing **")
         else:
             instance_key = f"{arguments[0]}.{arguments[1]}"
@@ -90,7 +90,7 @@ class HBNBCommand(cmd.Cmd):
                     for key, value in storage.all().items()
                     if arguments[0] in key
                     ]
-            print(insances_list)
+            print(instances_list)
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
@@ -99,13 +99,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arguments[0] not in self.class_name:
             print("** class doesn't exist **")
-        elif len(arguments) == 1:
+        elif len(arguments) < 2:
             print("** instance id missing **")
         elif f"{arguments[0]}.{arguments[1]}" not in storage.all():
             print("** no instance found **")
-        elif len(arguments) == 2:
+        elif len(arguments) < 3:
             print("** attribute name missing **")
-        elif len(arguments) == 3:
+        elif len(arguments) < 4:
             print("** value missing **")
         else:
             instance_key = f"{arguments[0]}.{arguments[1]}"
