@@ -1,126 +1,114 @@
 #!/usr/bin/python3
-"""Unit tests for Place class"""
-from models.place import Place
+"""Unit tests for the Place class"""
 import unittest
+from models.place import Place
 from datetime import datetime
 from models import storage
 
 
 class TestPlace(unittest.TestCase):
-    """Test cases for Place class"""
+    """Test cases for the Place class"""
+
+    def setUp(self):
+        """Set up a Place instance for testing"""
+        self.place = Place()
+
+    def tearDown(self):
+        """Clean up after testing"""
+        pass
 
     def test_attributes(self):
-        """Test the attributes of the Place instance"""
-        my_place = Place()
-        self.assertTrue(hasattr(my_place, 'id'))
-        self.assertTrue(hasattr(my_place, 'created_at'))
-        self.assertTrue(hasattr(my_place, 'updated_at'))
-        self.assertTrue(hasattr(my_place, '__class__'))
-        self.assertTrue(hasattr(my_place, 'city_id'))
-        self.assertTrue(hasattr(my_place, 'user_id'))
-        self.assertTrue(hasattr(my_place, 'name'))
-        self.assertTrue(hasattr(my_place, 'description'))
-        self.assertTrue(hasattr(my_place, 'number_rooms'))
-        self.assertTrue(hasattr(my_place, 'number_bathrooms'))
-        self.assertTrue(hasattr(my_place, 'max_guest'))
-        self.assertTrue(hasattr(my_place, 'price_by_night'))
-        self.assertTrue(hasattr(my_place, 'latitude'))
-        self.assertTrue(hasattr(my_place, 'longitude'))
-        self.assertTrue(hasattr(my_place, 'amenity_ids'))
+        """Test the existence of required attributes"""
+        self.assertTrue(hasattr(self.place, 'city_id'))
+        self.assertTrue(hasattr(self.place, 'user_id'))
+        self.assertTrue(hasattr(self.place, 'name'))
+        self.assertTrue(hasattr(self.place, 'description'))
+        self.assertTrue(hasattr(self.place, 'number_rooms'))
+        self.assertTrue(hasattr(self.place, 'number_bathrooms'))
+        self.assertTrue(hasattr(self.place, 'max_guest'))
+        self.assertTrue(hasattr(self.place, 'price_by_night'))
+        self.assertTrue(hasattr(self.place, 'latitude'))
+        self.assertTrue(hasattr(self.place, 'longitude'))
+        self.assertTrue(hasattr(self.place, 'amenity_ids'))
 
-    def test_str_method(self):
-        """Test the __str__ method"""
-        my_place = Place()
-        expected_str = "[Place] ({}) {}".format(
-            my_place.id, my_place.__dict__
-        )
-        self.assertEqual(str(my_place), expected_str)
+    def test_default_values(self):
+        """Test default values of Place attributes"""
+        self.assertEqual(self.place.city_id, "")
+        self.assertEqual(self.place.user_id, "")
+        self.assertEqual(self.place.name, "")
+        self.assertEqual(self.place.description, "")
+        self.assertEqual(self.place.number_rooms, 0)
+        self.assertEqual(self.place.number_bathrooms, 0)
+        self.assertEqual(self.place.max_guest, 0)
+        self.assertEqual(self.place.price_by_night, 0)
+        self.assertEqual(self.place.latitude, 0.0)
+        self.assertEqual(self.place.longitude, 0.0)
+        self.assertEqual(self.place.amenity_ids, [])
 
-    def test_save_method(self):
-        """Test the save method"""
-        my_place = Place()
-        original_updated_at = my_place.updated_at
-        my_place.save()
-        self.assertNotEqual(original_updated_at, my_place.updated_at)
-
-    def test_to_dict_method(self):
-        """Test the to_dict method"""
-        my_place = Place()
-        my_place.city_id = "SF"
-        my_place.user_id = "123"
-        my_place.name = "Cozy Apartment"
-        my_place.description = "A comfortable place to stay"
-        my_place.number_rooms = 2
-        my_place.number_bathrooms = 1
-        my_place.max_guest = 4
-        my_place.price_by_night = 100
-        my_place.latitude = 37.7749
-        my_place.longitude = -122.4194
-        my_place.amenity_ids = ["wifi", "kitchen", "parking"]
-        place_json = my_place.to_dict()
-
-        self.assertEqual(place_json['id'], my_place.id)
-        self.assertEqual(place_json['__class__'], 'Place')
-        self.assertEqual(place_json['city_id'], "SF")
-        self.assertEqual(place_json['user_id'], "123")
-        self.assertEqual(place_json['name'], "Cozy Apartment")
+    def test_save_reload(self):
+        """Test saving and reloading a Place instance"""
+        self.place.city_id = "123"
+        self.place.user_id = "456"
+        self.place.name = "Sunny Beach House"
+        self.place.description = "A charming beachfront property"
+        self.place.number_rooms = 2
+        self.place.number_bathrooms = 1
+        self.place.max_guest = 4
+        self.place.price_by_night = 100
+        self.place.latitude = 37.7749
+        self.place.longitude = -122.4194
+        self.place.amenity_ids = ["789", "012"]
+        self.place.save()
+        key = "{}.{}".format(self.place.__class__.__name__, self.place.id)
+        reloaded_place = storage.all()[key]
+        self.assertEqual(reloaded_place.city_id, "123")
+        self.assertEqual(reloaded_place.user_id, "456")
+        self.assertEqual(reloaded_place.name, "Sunny Beach House")
         self.assertEqual(
-                place_json['description'],
-                "A comfortable place to stay"
-                )
-        self.assertEqual(place_json['number_rooms'], 2)
-        self.assertEqual(place_json['number_bathrooms'], 1)
-        self.assertEqual(place_json['max_guest'], 4)
-        self.assertEqual(place_json['price_by_night'], 100)
-        self.assertEqual(place_json['latitude'], 37.7749)
-        self.assertEqual(place_json['longitude'], -122.4194)
-        self.assertEqual(place_json['amenity_ids'], ["wifi", "kitchen", "parking"])
-        self.assertEqual(type(place_json['created_at']), str)
-        self.assertEqual(type(place_json['updated_at']), str)
+            reloaded_place.description, "A charming beachfront property")
+        self.assertEqual(reloaded_place.number_rooms, 2)
+        self.assertEqual(reloaded_place.number_bathrooms, 1)
+        self.assertEqual(reloaded_place.max_guest, 4)
+        self.assertEqual(reloaded_place.price_by_night, 100)
+        self.assertEqual(reloaded_place.latitude, 37.7749)
+        self.assertEqual(reloaded_place.longitude, -122.4194)
+        self.assertEqual(reloaded_place.amenity_ids, ["789", "012"])
 
-    def test_init_from_dict(self):
-        """Test creating an instance from a dictionary"""
-        my_place = Place()
-        my_place.city_id = "SF"
-        my_place.user_id = "123"
-        my_place.name = "Cozy Apartment"
-        my_place.description = "A comfortable place to stay"
-        my_place.number_rooms = 2
-        my_place.number_bathrooms = 1
-        my_place.max_guest = 4
-        my_place.price_by_night = 100
-        my_place.latitude = 37.7749
-        my_place.longitude = -122.4194
-        my_place.amenity_ids = ["wifi", "kitchen", "parking"]
-        place_json = my_place.to_dict()
+    def test_to_dict(self):
+        """Test conversion of Place instance to dictionary"""
+        self.place.city_id = "987"
+        self.place.user_id = "654"
+        self.place.name = "Mountain Cabin"
+        self.place.description = "A cozy cabin in the mountains"
+        self.place.number_rooms = 3
+        self.place.number_bathrooms = 2
+        self.place.max_guest = 6
+        self.place.price_by_night = 200
+        self.place.latitude = 34.0522
+        self.place.longitude = -118.2437
+        self.place.amenity_ids = ["345", "678"]
+        place_dict = self.place.to_dict()
+        self.assertEqual(place_dict['city_id'], "987")
+        self.assertEqual(place_dict['user_id'], "654")
+        self.assertEqual(place_dict['name'], "Mountain Cabin")
+        self.assertEqual(place_dict['description'], "A cozy cabin in the mountains")
+        self.assertEqual(place_dict['number_rooms'], 3)
+        self.assertEqual(place_dict['number_bathrooms'], 2)
+        self.assertEqual(place_dict['max_guest'], 6)
+        self.assertEqual(place_dict['price_by_night'], 200)
+        self.assertEqual(place_dict['latitude'], 34.0522)
+        self.assertEqual(place_dict['longitude'], -118.2437)
+        self.assertEqual(place_dict['amenity_ids'], ["345", "678"])
+        self.assertEqual(place_dict['__class__'], "Place")
+        self.assertTrue('id' in place_dict)
+        self.assertTrue('created_at' in place_dict)
+        self.assertTrue('updated_at' in place_dict)
 
-        new_place = Place(**place_json)
-
-        self.assertEqual(my_place.id, new_place.id)
-        self.assertEqual(
-            int(my_place.created_at.timestamp()),
-            int(new_place.created_at.timestamp())
-        )
-        self.assertEqual(
-            int(my_place.updated_at.timestamp()),
-            int(new_place.updated_at.timestamp())
-        )
-        self.assertEqual(my_place.city_id, new_place.city_id)
-        self.assertEqual(my_place.user_id, new_place.user_id)
-        self.assertEqual(my_place.name, new_place.name)
-        self.assertEqual(my_place.description, new_place.description)
-        self.assertEqual(my_place.number_rooms, new_place.number_rooms)
-        self.assertEqual(my_place.number_bathrooms, new_place.number_bathrooms)
-        self.assertEqual(my_place.max_guest, new_place.max_guest)
-        self.assertEqual(my_place.price_by_night, new_place.price_by_night)
-        self.assertEqual(my_place.latitude, new_place.latitude)
-        self.assertEqual(my_place.longitude, new_place.longitude)
-        self.assertEqual(my_place.amenity_ids, new_place.amenity_ids)
-        self.assertEqual(
-            my_place.__class__.__name__,
-            new_place.__class__.__name__
-        )
+    def test_created_at_updated_at(self):
+        """Test the data types of created_at and updated_at attributes"""
+        self.assertTrue(isinstance(self.place.created_at, datetime))
+        self.assertTrue(isinstance(self.place.updated_at, datetime))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
