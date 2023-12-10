@@ -124,6 +124,19 @@ class HBNBCommand(cmd.Cmd):
             setattr(instance, attr_name, attr_value)
             instance.save()
 
+    def default(self, line):
+        """Handle special cases for function calls."""
+        args = line.split('.')
+        if len(args) == 2 and args[1] == "all()":
+            class_name = args[0]
+            class_instances = [
+                    str(instance)
+                    for instance in globals()[class_name].all()
+                    ]
+            print(class_instances)
+        else:
+            print("Invalid command")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
