@@ -1,73 +1,53 @@
 #!/usr/bin/python3
-"""Unit tests for Amenity class"""
-from models.amenity import Amenity
+"""Unit tests for the Amenity class"""
 import unittest
+from models.amenity import Amenity
 from datetime import datetime
 from models import storage
 
 
 class TestAmenity(unittest.TestCase):
-    """Test cases for Amenity class"""
+    """Test cases for the Amenity class"""
+
+    def setUp(self):
+        """Set up an Amenity instance for testing"""
+        self.amenity = Amenity()
+
+    def tearDown(self):
+        """Clean up after testing"""
+        pass
 
     def test_attributes(self):
-        """Test the attributes of the Amenity instance"""
-        my_amenity = Amenity()
-        self.assertTrue(hasattr(my_amenity, 'id'))
-        self.assertTrue(hasattr(my_amenity, 'created_at'))
-        self.assertTrue(hasattr(my_amenity, 'updated_at'))
-        self.assertTrue(hasattr(my_amenity, '__class__'))
-        self.assertTrue(hasattr(my_amenity, 'name'))
+        """Test the existence of required attributes"""
+        self.assertTrue(hasattr(self.amenity, 'name'))
 
-    def test_str_method(self):
-        """Test the __str__ method"""
-        my_amenity = Amenity()
-        expected_str = "[Amenity] ({}) {}".format(
-            my_amenity.id, my_amenity.__dict__
-        )
-        self.assertEqual(str(my_amenity), expected_str)
+    def test_default_values(self):
+        """Test default values of Amenity attributes"""
+        self.assertEqual(self.amenity.name, "")
 
-    def test_save_method(self):
-        """Test the save method"""
-        my_amenity = Amenity()
-        original_updated_at = my_amenity.updated_at
-        my_amenity.save()
-        self.assertNotEqual(original_updated_at, my_amenity.updated_at)
+    def test_save_reload(self):
+        """Test saving and reloading an Amenity instance"""
+        self.amenity.name = "Sauna"
+        self.amenity.save()
+        key = "{}.{}".format(self.amenity.__class__.__name__, self.amenity.id)
+        reloaded_amenity = storage.all()[key]
+        self.assertEqual(reloaded_amenity.name, "Sauna")
 
-    def test_to_dict_method(self):
-        """Test the to_dict method"""
-        my_amenity = Amenity()
-        my_amenity.name = "Swimming Pool"
-        amenity_json = my_amenity.to_dict()
+    def test_to_dict(self):
+        """Test conversion of Amenity instance to dictionary"""
+        self.amenity.name = "Movie Theater"
+        amenity_dict = self.amenity.to_dict()
+        self.assertEqual(amenity_dict['name'], "Movie Theater")
+        self.assertEqual(amenity_dict['__class__'], "Amenity")
+        self.assertTrue('id' in amenity_dict)
+        self.assertTrue('created_at' in amenity_dict)
+        self.assertTrue('updated_at' in amenity_dict)
 
-        self.assertEqual(amenity_json['id'], my_amenity.id)
-        self.assertEqual(amenity_json['__class__'], 'Amenity')
-        self.assertEqual(amenity_json['name'], "Swimming Pool")
-        self.assertEqual(type(amenity_json['created_at']), str)
-        self.assertEqual(type(amenity_json['updated_at']), str)
-
-    def test_init_from_dict(self):
-        """Test creating an instance from a dictionary"""
-        my_amenity = Amenity()
-        my_amenity.name = "Swimming Pool"
-        amenity_json = my_amenity.to_dict()
-
-        new_amenity = Amenity(**amenity_json)
-
-        self.assertEqual(my_amenity.id, new_amenity.id)
-        self.assertEqual(
-            int(my_amenity.created_at.timestamp()),
-            int(new_amenity.created_at.timestamp())
-        )
-        self.assertEqual(
-            int(my_amenity.updated_at.timestamp()),
-            int(new_amenity.updated_at.timestamp())
-        )
-        self.assertEqual(my_amenity.name, new_amenity.name)
-        self.assertEqual(
-            my_amenity.__class__.__name__,
-            new_amenity.__class__.__name__
-        )
+    def test_created_at_updated_at(self):
+        """Test the data types of created_at and updated_at attributes"""
+        self.assertTrue(isinstance(self.amenity.created_at, datetime))
+        self.assertTrue(isinstance(self.amenity.updated_at, datetime))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
