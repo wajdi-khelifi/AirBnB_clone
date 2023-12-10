@@ -38,3 +38,11 @@ class BaseModel:
         obj_dict['created_at'] = self.created_at.isoformat()
         obj_dict['updated_at'] = self.updated_at.isoformat()
         return obj_dict
+
+    def count(cls):
+        """Returns the number of instances of User"""
+        return len([
+            value
+            for value in storage.all().values()
+            if isinstance(value, cls)
+            ])
