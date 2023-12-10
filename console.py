@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         for instance in storage.all().values():
             if isinstance(instance, eval(arg)):
                 count += 1
-        return count
+        print(count)
 
     def default(self, arg):
         """Handle unrecognized commands in a default manner."""
