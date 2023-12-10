@@ -37,8 +37,13 @@ class HBNBCommand(cmd.Cmd):
             new_instance = eval(f"{arguments[0]}()")
             new_instance.save()
             print(new_instance.id)
+<<<<<<< HEAD
 
     def do_show(self, arg):
+=======
+			
+	 def do_show(self, arg):
+>>>>>>> 9bd39aeccd69aa2dfce600332b55d9da56609312
         """Show command to display the string representation of an instance"""
         arguments = split(arg)
         if len(arguments) == 0:
@@ -70,8 +75,13 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             else:
                 print("** no instance found **")
+<<<<<<< HEAD
 
     def do_all(self, arg):
+=======
+				
+	def do_all(self, arg):
+>>>>>>> 9bd39aeccd69aa2dfce600332b55d9da56609312
         """"""
         arguments = split(arg)
         if len(arguments) == 0:
