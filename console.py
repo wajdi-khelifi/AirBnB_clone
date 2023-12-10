@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** target class name missing **")
                 return
         else:
-            return command_actions[issued_command].format(target_class)
+            return command_actions[issued_command]("{}".format(target_class))
 
 
 if __name__ == '__main__':
