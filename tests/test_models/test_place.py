@@ -91,7 +91,10 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(place_dict['city_id'], "987")
         self.assertEqual(place_dict['user_id'], "654")
         self.assertEqual(place_dict['name'], "Mountain Cabin")
-        self.assertEqual(place_dict['description'], "A cozy cabin in the mountains")
+        self.assertEqual(
+                place_dict['description'],
+                "A cozy cabin in the mountains"
+                )
         self.assertEqual(place_dict['number_rooms'], 3)
         self.assertEqual(place_dict['number_bathrooms'], 2)
         self.assertEqual(place_dict['max_guest'], 6)
