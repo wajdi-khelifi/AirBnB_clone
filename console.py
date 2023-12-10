@@ -93,11 +93,9 @@ class HBNBCommand(cmd.Cmd):
         elif arguments[0] not in self.class_name:
             print("** class doesn't exist **")
         else:
-            instances_list = [
-                    str(value)
-                    for key, value in storage.all().items()
-                    if arguments[0] in key
-                    ]
+            class_name = arguments[0]
+            class_instances = globals()[class_name].all()
+            instances_list = [str(instance) for instance in class_instances]
             print(instances_list)
 
     def do_update(self, arg):
