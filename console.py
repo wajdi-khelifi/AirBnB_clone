@@ -125,18 +125,12 @@ class HBNBCommand(cmd.Cmd):
             instance.save()
 
     def do_count(self, arg):
-        """Retrieve the number of instances of a class."""
-        arguments = arg.split(".")
-        class_name = arguments[0]
-        count_command = "count()"
-        command_actions = {
-            'User': self.count_user_instances,
-        }
-
-        if class_name in command_actions.keys():
-            return command_actions[class_name]()
-        else:
-            print("** class doesn't exist **")
+        """Count the number of instances of a given class."""
+        count = 0
+        for instance in storage.all().values():
+            if isinstance(instance, eval(class_name)):
+                count += 1
+        return count
 
     def default(self, arg):
         """Handle unrecognized commands in a default manner."""
