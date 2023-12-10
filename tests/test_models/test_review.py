@@ -49,7 +49,10 @@ class TestReview(unittest.TestCase):
         review_dict = self.review.to_dict()
         self.assertEqual(review_dict['place_id'], "789")
         self.assertEqual(review_dict['user_id'], "012")
-        self.assertEqual(review_dict['text'], "Lovely place, highly recommended")
+        self.assertEqual(
+                review_dict['text'],
+                "Lovely place, highly recommended"
+                )
         self.assertEqual(review_dict['__class__'], "Review")
         self.assertTrue('id' in review_dict)
         self.assertTrue('created_at' in review_dict)
