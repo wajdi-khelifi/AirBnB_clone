@@ -95,7 +95,11 @@ class HBNBCommand(cmd.Cmd):
         else:
             class_name = arguments[0]
             class_instances = globals()[class_name].all()
-            instances_list = [str(instance) for instance in class_instances]
+            instances_list = [
+                    str(instance)
+                    for instance in storage.all().values()
+                    if instance.__class__.__name__ == class_name
+                    ]
             print(instances_list)
 
     def do_update(self, arg):
@@ -120,14 +124,6 @@ class HBNBCommand(cmd.Cmd):
             attr_value = arguments[3]
             setattr(instance, attr_name, attr_value)
             instance.save()
-
-    def default(self, arg):
-        """Custom method for handling <class name>.all()"""
-        parts = arg.split(".")
-        if len(parts) == 2 and parts[1] == "all" and parts[0] in self.class_name:
-            self.do_all(parts[0])
-        else:
-            super().default(arg)
 
 
 if __name__ == '__main__':
