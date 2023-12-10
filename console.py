@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         """Count the number of instances of a given class."""
         count = 0
         for instance in storage.all().values():
-            if isinstance(instance, eval(class_name)):
+            if isinstance(instance, eval(arg)):
                 count += 1
         return count
 
