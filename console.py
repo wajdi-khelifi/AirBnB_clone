@@ -124,20 +124,21 @@ class HBNBCommand(cmd.Cmd):
             setattr(instance, attr_name, attr_value)
             instance.save()
 
-    def default(self, line):
-        """Handle special cases for function calls."""
-        dot_split = arg.split('.')
-        if len(dot_split) == 2:
-            class_name = dot_split[0]
-            remaining_args = dot_split[1].split('(')
-            if len(remaining_args) == 2 and remaining_args[1].endswith(")"):
-                class_instances = [
-                    str(instance)
-                    for instance in globals()[class_name].all()
-                ]
-                print(class_instances)
+    def default(self, arg):
+        """Handle unrecognized commands in a default manner."""
+        arguments = arg.split(".")
+        target_class = arguments[0]
+        command_parts = arguments[1].split("(")
+        issued_command = command_parts[0]
+        command_actions = {
+                'all': self.perform_all_action
+                }
+        if issued_command not in command_actions.keys():
+            if not target_class:
+                print("** target class name missing **")
                 return
-        print("Invalid command")
+        else:
+            return command_actions[issued_command].format(target_class)
 
 
 if __name__ == '__main__':
