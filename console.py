@@ -124,6 +124,20 @@ class HBNBCommand(cmd.Cmd):
             setattr(instance, attr_name, attr_value)
             instance.save()
 
+    def do_count(self, arg):
+        """Retrieve the number of instances of a class."""
+        arguments = arg.split(".")
+        class_name = arguments[0]
+        count_command = "count()"
+        command_actions = {
+            'User': self.count_user_instances,
+        }
+
+        if class_name in command_actions.keys():
+            return command_actions[class_name]()
+        else:
+            print("** class doesn't exist **")
+
     def default(self, arg):
         """Handle unrecognized commands in a default manner."""
         arguments = arg.split(".")
@@ -131,7 +145,8 @@ class HBNBCommand(cmd.Cmd):
         command_parts = arguments[1].split("(")
         issued_command = command_parts[0]
         command_actions = {
-                'all': self.do_all
+                'all': self.do_all,
+                'count': self.do_count
                 }
         if issued_command not in command_actions.keys():
             if not target_class:
